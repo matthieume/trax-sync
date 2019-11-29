@@ -31,7 +31,7 @@ class Pusher
         $failed = 0;
 
         // Repeat for each batch.
-        while (true) {
+        for ($batches = 0; $batches < $connector->maxBatches(); $batches++) {
 
             // Get failed attempts to retry.
             $retry_logs = Push::where('connector', $connector->id())->where('error', '<>', 0)->where('attempts', '<', $connector->maxAttempts())

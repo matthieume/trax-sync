@@ -64,6 +64,14 @@ class Connection implements Connector
     }
 
     /**
+     * Get max batches.
+     */
+    public function maxBatches()
+    {
+        return $this->settings->max_batches;
+    }
+
+    /**
      * Get max attempts.
      */
     public function maxAttempts()
