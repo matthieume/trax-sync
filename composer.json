@@ -1,0 +1,34 @@
+{
+    "name": "trax/sync",
+    "description": "Sync functions for TRAX LRS",
+    "type": "library",
+    "license": "EUPL-1.2",
+    "authors": [
+        {
+            "name": "Sébastien Fraysse",
+            "email": "sebastien@fraysse.eu",
+            "homepage": "http://fraysse.eu"
+        }
+    ],
+    "require": {
+        "elasticsearch/elasticsearch": "^7.3",
+        "guzzlehttp/guzzle": "^6.3",
+        "trax/framework": "^1.0@RC",
+        "trax/xapi": "^1.0@RC"
+    },
+    "autoload": {
+        "psr-4": {
+            "Trax\\Sync\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Trax\\Sync\\SyncServiceProvider"
+            ],
+            "aliases": {
+                "Debugbar": "Trax\\Sync\\SyncFacade"
+            }
+        }
+    }
+}
