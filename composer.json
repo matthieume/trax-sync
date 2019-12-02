@@ -27,7 +27,7 @@
                 "Trax\\Sync\\SyncServiceProvider"
             ],
             "aliases": {
-                "Debugbar": "Trax\\Sync\\SyncFacade"
+                "TraxSync": "Trax\\Sync\\SyncFacade"
             }
         }
     }
