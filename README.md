@@ -8,6 +8,29 @@ TRAX Sync
 - `php artisan migrate`
 
 
+## Configuration
+
+You can configure one or several connections in the **config/trax-sync.php`** file. For example:
+
+```
+'elastic' => [
+
+    'id' => 0,              // Define it, and don't change it. It is used in DB.
+    'type' => 'elastic',    // elastic or lrs
+
+    'hosts' => [            // ElasticSearch hosts
+        'localhost:9200'    
+    ],
+    'username' => '',       // ElasticSearch Basic HTTP username
+    'password' => '',       // ElasticSearch Basic HTTP password
+
+    'batch_size' => 100,    // Number of statements per POST request
+    'max_batches' => 10,    // Number of requests per command (or CRON task)
+    'max_attempts' => 3,    // Number of tries when an error occurs 
+],
+```
+
+
 ## Commands
 
 Configure your connections in `config/trax-sync.php`, then:
