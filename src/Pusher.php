@@ -21,7 +21,7 @@ class Pusher
         $connector = new Connection($connection_name);
         $connector->check();
 
-        // Remove logs to send all.
+        // Remove logs.
         if ($all) {
             Push::where('connector', $connector->id())->delete();
         }
@@ -38,17 +38,25 @@ class Pusher
                 ->orderBy('statement_id')->take($connector->batchSize())->get();
 
             $retry_ids = $retry_logs->pluck('statement_id')->all();
+            if (empty($retry_ids)) {
 
-            // $retry = Statement::whereIn('id', $retry_ids)->orderBy('id')->get();
-            $retry = $store->get([
-                'order-by' => 'id',
-                'search' => [
-                    'id' => (object)['operator' => 'IN', 'value' => $retry_ids]
-                ]
-            ]);
-            
+                // Nothing to retry.
+                $retry = collect([]);
+                $more = $connector->batchSize();
+
+            } else {
+
+                // Something to retry.
+                $retry = $store->get([
+                    'order-by' => 'id',
+                    'search' => [
+                        'id' => (object)['operator' => 'IN', 'value' => $retry_ids]
+                    ]
+                ]);
+                $more = $connector->batchSize() - $retry->count();
+            }
+
             // If we can add more statements.
-            $more = $connector->batchSize() - $retry->count();
             if ($more > 0) {
 
                 // Get statements to send for the first time.
@@ -63,7 +71,6 @@ class Pusher
                         ]
                     ]);
                 } else {
-                    //$new = Statement::orderBy('id')->take($more)->get();
                     $new = $store->get([
                         'order-by' => 'id',
                         'limit' => $more
