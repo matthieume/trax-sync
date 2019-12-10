@@ -6,6 +6,7 @@ use Elasticsearch\Client as ElasticClient;
 use Elasticsearch\ClientBuilder;
 use Elasticsearch\Common\Exceptions\Missing404Exception;
 use Elasticsearch\Common\Exceptions\NoNodesAvailableException;
+use Illuminate\Support\Facades\Log;
 
 class Elastic implements Connector
 {
@@ -59,6 +60,7 @@ class Elastic implements Connector
 
         } catch (NoNodesAvailableException $e) {
 
+            Log::error('Elastic connector: ' . $e->getMessage());
             throw new \Exception("Connection failed: Elastic node not found");
         }
     }
@@ -102,6 +104,8 @@ class Elastic implements Connector
             
 
         } catch (\Exception $e) {
+
+            Log::error('Elastic connector: ' . $e->getMessage());
 
             // Error for all.
             return array_map(function($statement) {
